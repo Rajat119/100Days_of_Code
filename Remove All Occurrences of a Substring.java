@@ -1,0 +1,8 @@
+class Solution {
+    public String removeOccurrences(String s, String part) {
+        int Sidx = s.indexOf(part);
+        int Eidx = Sidx+part.length()-1;
+        if(Sidx==-1)return s;
+        return removeOccurrences(s.substring(0,Sidx)+s.substring(Eidx+1),part);
+    }
+}
