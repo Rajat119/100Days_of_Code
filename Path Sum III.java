@@ -15,17 +15,17 @@
  */
 class Solution {
     public int pathSum(TreeNode root, int targetSum) {
-    return solve(root, targetSum, new ArrayList<>(), 0);
+    return solve(root, targetSum, new ArrayList<>());
     }
 
-    private int solve(TreeNode root, int targetSum, ArrayList<TreeNode> path, int count) {
+    private int solve(TreeNode root, int targetSum, ArrayList<TreeNode> path) {
         if (root == null) {
             return 0;
         }
 
         path.add(root);
 
-        count = 0;
+        int count = 0;
         long sum = 0;
 
         for (int i = path.size() - 1; i >= 0; i--) {
@@ -35,8 +35,8 @@ class Solution {
             }
         }
 
-        count += solve(root.left, targetSum, path, count);
-        count += solve(root.right, targetSum, path, count);
+        count += solve(root.left, targetSum, path);
+        count += solve(root.right, targetSum, path);
 
         path.remove(path.size() - 1);
         return count;
