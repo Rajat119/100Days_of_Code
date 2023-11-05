@@ -18,14 +18,14 @@ class Solution {
     return solve(root, targetSum, new ArrayList<>(), 0);
     }
 
-    private int solve(TreeNode root, int targetSum, ArrayList<TreeNode> path, long currentSum) {
+    private int solve(TreeNode root, int targetSum, ArrayList<TreeNode> path, int count) {
         if (root == null) {
             return 0;
         }
 
         path.add(root);
 
-        int count = 0;
+        count = 0;
         long sum = 0;
 
         for (int i = path.size() - 1; i >= 0; i--) {
