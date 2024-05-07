@@ -10,23 +10,19 @@
  */
 class Solution {
     public ListNode doubleIt(ListNode head) {
-        Stack<Integer> s = new Stack<Integer>();
-        
-        while(head!=null){
-            s.push(head.val);
-            head = head.next;
-        }
-        ListNode tail = null;
-        int res = 0;
-        while(!s.isEmpty() || res!=0){
-            tail = new ListNode(0,tail);
-            if(!s.isEmpty()){
-                res = res + s.pop() * 2;
-            }
-            tail.val = res%10;
-            res /= 10;
-        }
+        ListNode head1 = new ListNode();
+        head1.next = head;
 
-        return tail;
+        ListNode left = head1;
+        ListNode right = head;
+        while (right != null) {
+            if (right.val * 2 >= 10) {
+                left.val += 1;
+            }
+            right.val = (right.val * 2) % 10;
+            left = left.next;
+            right = right.next;
+        }
+        return head1.val > 0 ? head1 : head;
     }
 }
