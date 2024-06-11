@@ -1,25 +1,41 @@
+import java.util.Arrays;
+import java.util.Comparator;
+
 class Solution {
     public int maxHeight(int[][] cuboids) {
-         int n = cuboids.length;
-        for(int i = 0; i< n;i++){
-            Arrays.sort(cuboids[i]);
+        // 1. Sort dimensions within each cuboid
+        for (int[] cuboid : cuboids) {
+            Arrays.sort(cuboid);
         }
-        Arrays.sort(cuboids, (a, b) -> (b[2] - a[2] == 0 ? (b[1] - a[1] == 0 ? b[0] - a[0] : b[1] - a[1]) : b[2] - a[2]));
-        int[] dp = new int[n+1];
-       for(int i = 1 ; i< n+1 ;i++){
-           dp[i] = cuboids[i-1][2];
-       }
-        // dp[0] = 0;
-        int max = cuboids[0][2];
-        for(int index = 2; index < n+1; index++){
-            for(int track = 1; track < index ; track++){
-                if(cuboids[index-1][0]<=cuboids[track-1][0] && cuboids[index-1][1]<=cuboids[track-1][1] && cuboids[index-1][2]<=cuboids[track-1][2]){
-                    dp[index] = Math.max(dp[index], cuboids[index-1][2]+dp[track]);
+
+        // 2. Sort cuboids based on their dimensions
+        Arrays.sort(cuboids, (a, b) -> {
+            if (a[0] != b[0]) {
+                return a[0] - b[0];
+            } else if (a[1] != b[1]) {
+                return a[1] - b[1];
+            } else {
+                return a[2] - b[2];
+            }
+        });
+
+        // 3. Dynamic Programming: dp[i] stores the max height ending with cuboid i
+        int n = cuboids.length;
+        int[] dp = new int[n];
+        int maxHeight = 0;
+
+        for (int i = 0; i < n; i++) {
+            dp[i] = cuboids[i][2]; // Initialize with the height of the current cuboid
+            for (int j = 0; j < i; j++) {
+                if (cuboids[j][0] <= cuboids[i][0] && 
+                    cuboids[j][1] <= cuboids[i][1] && 
+                    cuboids[j][2] <= cuboids[i][2]) {
+                    dp[i] = Math.max(dp[i], dp[j] + cuboids[i][2]);
                 }
-                max = Math.max(max, dp[index]);
-                
-                }
+            }
+            maxHeight = Math.max(maxHeight, dp[i]);
         }
-        return max;
+
+        return maxHeight;
     }
 }
